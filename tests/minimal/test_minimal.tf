@@ -13,34 +13,58 @@ terraform {
 
 module "main" {
   source = "../.."
-
-  name = "ABC"
 }
 
-data "aci_rest" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest" "aaaAuthRealm" {
+  dn = "uni/userext/authrealm"
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "aaaAuthRealm" {
+  component = "aaaAuthRealm"
 
-  equal "name" {
-    description = "name"
-    got         = data.aci_rest.fvTenant.content.name
-    want        = "ABC"
+  equal "defRolePolicy" {
+    description = "defRolePolicy"
+    got         = data.aci_rest.aaaAuthRealm.content.defRolePolicy
+    want        = "no-login"
+  }
+}
+
+data "aci_rest" "aaaDefaultAuth" {
+  dn = "uni/userext/authrealm/defaultauth"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "aaaDefaultAuth" {
+  component = "aaaDefaultAuth"
+
+  equal "fallbackCheck" {
+    description = "fallbackCheck"
+    got         = data.aci_rest.aaaDefaultAuth.content.fallbackCheck
+    want        = "false"
   }
 
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest.fvTenant.content.nameAlias
-    want        = ""
+  equal "realm" {
+    description = "realm"
+    got         = data.aci_rest.aaaDefaultAuth.content.realm
+    want        = "local"
   }
+}
 
-  equal "descr" {
-    description = "descr"
-    got         = data.aci_rest.fvTenant.content.descr
-    want        = ""
+data "aci_rest" "aaaConsoleAuth" {
+  dn = "uni/userext/authrealm/consoleauth"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "aaaConsoleAuth" {
+  component = "aaaConsoleAuth"
+
+  equal "realm" {
+    description = "realm"
+    got         = data.aci_rest.aaaConsoleAuth.content.realm
+    want        = "local"
   }
 }

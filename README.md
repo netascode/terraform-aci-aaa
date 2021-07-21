@@ -1,22 +1,25 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
+[![Tests](https://github.com/netascode/terraform-aci-aaa/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-aaa/actions/workflows/test.yml)
 
-# Terraform ACI Scaffolding Module
+# Terraform ACI AAA Module
 
-Description
+Manages ACI AAA configuration
 
 Location in GUI:
-`Tenants` » `XXX`
+`Admin` » `AAA` » `Authentication` » `AAA`
 
 ## Examples
 
 ```hcl
-module "aci_scaffolding" {
-  source = "netascode/scaffolding/aci"
+module "aci_aaa" {
+  source = "netascode/aaa/aci"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
-  description = "My Description"
+  remote_user_login_policy = "assign-default-role"
+  default_fallback_check   = true
+  default_realm            = "tacacs"
+  default_login_domain     = "ISE"
+  console_realm            = "tacacs"
+  console_login_domain     = "ISE"
 }
 
 ```
@@ -38,20 +41,24 @@ module "aci_scaffolding" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | Tenant name | `string` | n/a | yes |
-| <a name="input_alias"></a> [alias](#input\_alias) | Tenant alias | `string` | `""` | no |
-| <a name="input_description"></a> [description](#input\_description) | Tenant description | `string` | `""` | no |
+| <a name="input_remote_user_login_policy"></a> [remote\_user\_login\_policy](#input\_remote\_user\_login\_policy) | Remote user login policy, Choices: `assign-default-role`, `no-login` | `string` | `"no-login"` | no |
+| <a name="input_default_fallback_check"></a> [default\_fallback\_check](#input\_default\_fallback\_check) | Default fallback check | `bool` | `false` | no |
+| <a name="input_default_realm"></a> [default\_realm](#input\_default\_realm) | Default realm, Choices: `local`, `tacacs` | `string` | `"local"` | no |
+| <a name="input_default_login_domain"></a> [default\_login\_domain](#input\_default\_login\_domain) | Default login domain | `string` | `""` | no |
+| <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm, Choices: `local`, `tacacs` | `string` | `"local"` | no |
+| <a name="input_console_login_domain"></a> [console\_login\_domain](#input\_console\_login\_domain) | Console login domain | `string` | `""` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fvTenant` object |
-| <a name="output_name"></a> [name](#output\_name) | Tenant name |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `aaaAuthRealm` object |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest.fvTenant](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.aaaAuthRealm](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.aaaConsoleAuth](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.aaaDefaultAuth](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 <!-- END_TF_DOCS -->
