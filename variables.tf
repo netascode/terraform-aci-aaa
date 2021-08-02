@@ -1,5 +1,5 @@
 variable "remote_user_login_policy" {
-  description = "Remote user login policy, Choices: `assign-default-role`, `no-login`"
+  description = "Remote user login policy. Choices: `assign-default-role`, `no-login`"
   type        = string
   default     = "no-login"
 
@@ -10,13 +10,13 @@ variable "remote_user_login_policy" {
 }
 
 variable "default_fallback_check" {
-  description = "Default fallback check"
+  description = "Default fallback check."
   type        = bool
   default     = false
 }
 
 variable "default_realm" {
-  description = "Default realm, Choices: `local`, `tacacs`"
+  description = "Default realm. Choices: `local`, `tacacs`."
   type        = string
   default     = "local"
 
@@ -27,7 +27,7 @@ variable "default_realm" {
 }
 
 variable "default_login_domain" {
-  description = "Default login domain"
+  description = "Default login domain."
   type        = string
   default     = ""
 
@@ -38,7 +38,7 @@ variable "default_login_domain" {
 }
 
 variable "console_realm" {
-  description = "Console realm, Choices: `local`, `tacacs`"
+  description = "Console realm. Choices: `local`, `tacacs`."
   type        = string
   default     = "local"
 
@@ -49,7 +49,7 @@ variable "console_realm" {
 }
 
 variable "console_login_domain" {
-  description = "Console login domain"
+  description = "Console login domain."
   type        = string
   default     = ""
 
