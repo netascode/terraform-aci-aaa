@@ -52,7 +52,7 @@ module "aci_aaa" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `aaaAuthRealm` object |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `aaaAuthRealm` object. |
 
 ## Resources
 
