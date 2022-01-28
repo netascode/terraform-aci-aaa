@@ -1,4 +1,4 @@
-resource "aci_rest" "aaaAuthRealm" {
+resource "aci_rest_managed" "aaaAuthRealm" {
   dn         = "uni/userext/authrealm"
   class_name = "aaaAuthRealm"
   content = {
@@ -6,8 +6,8 @@ resource "aci_rest" "aaaAuthRealm" {
   }
 }
 
-resource "aci_rest" "aaaDefaultAuth" {
-  dn         = "${aci_rest.aaaAuthRealm.dn}/defaultauth"
+resource "aci_rest_managed" "aaaDefaultAuth" {
+  dn         = "${aci_rest_managed.aaaAuthRealm.dn}/defaultauth"
   class_name = "aaaDefaultAuth"
   content = {
     fallbackCheck = var.default_fallback_check ? "true" : "false"
@@ -16,8 +16,8 @@ resource "aci_rest" "aaaDefaultAuth" {
   }
 }
 
-resource "aci_rest" "aaaConsoleAuth" {
-  dn         = "${aci_rest.aaaAuthRealm.dn}/consoleauth"
+resource "aci_rest_managed" "aaaConsoleAuth" {
+  dn         = "${aci_rest_managed.aaaAuthRealm.dn}/consoleauth"
   class_name = "aaaConsoleAuth"
   content = {
     realm         = var.console_realm

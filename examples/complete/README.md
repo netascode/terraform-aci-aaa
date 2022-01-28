@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_aaa" {
   source  = "netascode/aaa/aci"
-  version = ">= 0.0.1"
+  version = ">= 0.1.0"
 
   remote_user_login_policy = "assign-default-role"
   default_fallback_check   = true
@@ -23,6 +23,5 @@ module "aci_aaa" {
   console_realm            = "tacacs"
   console_login_domain     = "ISE"
 }
-
 ```
 <!-- END_TF_DOCS -->

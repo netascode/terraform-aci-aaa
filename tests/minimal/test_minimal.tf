@@ -5,8 +5,8 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
@@ -15,7 +15,7 @@ module "main" {
   source = "../.."
 }
 
-data "aci_rest" "aaaAuthRealm" {
+data "aci_rest_managed" "aaaAuthRealm" {
   dn = "uni/userext/authrealm"
 
   depends_on = [module.main]
@@ -26,12 +26,12 @@ resource "test_assertions" "aaaAuthRealm" {
 
   equal "defRolePolicy" {
     description = "defRolePolicy"
-    got         = data.aci_rest.aaaAuthRealm.content.defRolePolicy
+    got         = data.aci_rest_managed.aaaAuthRealm.content.defRolePolicy
     want        = "no-login"
   }
 }
 
-data "aci_rest" "aaaDefaultAuth" {
+data "aci_rest_managed" "aaaDefaultAuth" {
   dn = "uni/userext/authrealm/defaultauth"
 
   depends_on = [module.main]
@@ -42,18 +42,18 @@ resource "test_assertions" "aaaDefaultAuth" {
 
   equal "fallbackCheck" {
     description = "fallbackCheck"
-    got         = data.aci_rest.aaaDefaultAuth.content.fallbackCheck
+    got         = data.aci_rest_managed.aaaDefaultAuth.content.fallbackCheck
     want        = "false"
   }
 
   equal "realm" {
     description = "realm"
-    got         = data.aci_rest.aaaDefaultAuth.content.realm
+    got         = data.aci_rest_managed.aaaDefaultAuth.content.realm
     want        = "local"
   }
 }
 
-data "aci_rest" "aaaConsoleAuth" {
+data "aci_rest_managed" "aaaConsoleAuth" {
   dn = "uni/userext/authrealm/consoleauth"
 
   depends_on = [module.main]
@@ -64,7 +64,7 @@ resource "test_assertions" "aaaConsoleAuth" {
 
   equal "realm" {
     description = "realm"
-    got         = data.aci_rest.aaaConsoleAuth.content.realm
+    got         = data.aci_rest_managed.aaaConsoleAuth.content.realm
     want        = "local"
   }
 }
