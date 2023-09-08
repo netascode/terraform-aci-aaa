@@ -39,7 +39,7 @@ locals {
 
 resource "aci_rest_managed" "aaaDomain" {
   for_each   = { for sd in local.security_domains_list : sd.name => sd }
-  dn         = "uni/userext/domain-{each.value.name}"
+  dn         = "uni/userext/domain-${each.value.name}"
   class_name = "aaaDomain"
   content = {
     name                 = each.value.name
