@@ -19,6 +19,8 @@ module "main" {
   default_fallback_check   = true
   default_realm            = "local"
   console_realm            = "local"
+  security_domains         = [{ "name" : "SEC1", "description" : "SEC1 DOMAIN", "restricted_rbac_domain" : true }]
+
 }
 
 data "aci_rest_managed" "aaaAuthRealm" {
@@ -72,5 +74,21 @@ resource "test_assertions" "aaaConsoleAuth" {
     description = "realm"
     got         = data.aci_rest_managed.aaaConsoleAuth.content.realm
     want        = "local"
+  }
+}
+
+data "aci_rest_managed" "aaaDomain" {
+  dn = "uni/userext/domain-SEC1"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "aaaDomain" {
+  component = "aaaDomain"
+
+  equal "name" {
+    description = "name"
+    got         = data.aci_rest_managed.aaaDomain.content.name
+    want        = "SEC1"
   }
 }

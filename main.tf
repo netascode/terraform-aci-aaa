@@ -24,3 +24,26 @@ resource "aci_rest_managed" "aaaConsoleAuth" {
     providerGroup = var.console_realm == "tacacs" ? var.console_login_domain : null
   }
 }
+
+locals {
+  security_domains_list = flatten([
+    for sd in var.security_domains : [
+      {
+        name                   = sd.name
+        descr                  = sd.description
+        restricted_rbac_domain = sd.restricted_rbac_domain
+      }
+    ]
+  ])
+}
+
+resource "aci_rest_managed" "aaaDomain" {
+  for_each   = { for sd in local.security_domains_list : sd.name => sd }
+  dn         = "uni/userext/domain-{each.value.name}"
+  class_name = "aaaDomain"
+  content = {
+    name                 = each.value.name
+    descr                = each.value.descr
+    restrictedRbacDomain = each.value.restricted_rbac_domain == true ? "yes" : "no"
+  }
+}

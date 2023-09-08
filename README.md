@@ -47,6 +47,7 @@ module "aci_aaa" {
 | <a name="input_default_login_domain"></a> [default\_login\_domain](#input\_default\_login\_domain) | Default login domain. | `string` | `""` | no |
 | <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm. Choices: `local`, `tacacs`. | `string` | `"local"` | no |
 | <a name="input_console_login_domain"></a> [console\_login\_domain](#input\_console\_login\_domain) | Console login domain. | `string` | `""` | no |
+| <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | List of security domains. | <pre>list(object({<br>    name                   = string<br>    description            = optional(string, "")<br>    restricted_rbac_domain = optional(bool, false)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -61,4 +62,5 @@ module "aci_aaa" {
 | [aci_rest_managed.aaaAuthRealm](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaConsoleAuth](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaDefaultAuth](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.aaaDomain](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

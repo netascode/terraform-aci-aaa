@@ -58,3 +58,27 @@ variable "console_login_domain" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 }
+
+variable "security_domains" {
+  description = "List of security domains."
+  type = list(object({
+    name                   = string
+    description            = optional(string, "")
+    restricted_rbac_domain = optional(bool, false)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for sd in var.security_domains : sd.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", sd.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for sd in var.security_domains : can(regex("^[a-zA-Z0-9_.-]{0,64}$", sd.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
