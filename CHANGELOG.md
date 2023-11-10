@@ -1,3 +1,7 @@
+## 0.2.0 (unreleased)
+
+- Add support for security domains
+
 ## 0.1.0
 
 - Migrate to devnet provider
