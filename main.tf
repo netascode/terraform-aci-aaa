@@ -49,7 +49,7 @@ resource "aci_rest_managed" "pkiWebTokenData" {
   class_name = "pkiWebTokenData"
   content = {
     webtokenTimeoutSeconds = var.web_token_timeout
-    maximumValidityPeriod = var.web_token_max_validity
-    uiIdleTimeoutSeconds = var.web_session_idle_timeout
+    maximumValidityPeriod  = var.web_token_max_validity
+    uiIdleTimeoutSeconds   = var.web_session_idle_timeout
   }
 }
