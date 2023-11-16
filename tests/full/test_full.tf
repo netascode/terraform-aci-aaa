@@ -20,6 +20,10 @@ module "main" {
   default_realm            = "local"
   console_realm            = "local"
   security_domains         = [{ "name" : "SEC1", "description" : "SEC1 DOMAIN", "restricted_rbac_domain" : true }]
+  password_strength_check  = true
+  web_token_timeout        = 600
+  web_token_max_validity   = 24
+  web_session_idle_timeout = 1200
 
 }
 
@@ -90,5 +94,49 @@ resource "test_assertions" "aaaDomain" {
     description = "name"
     got         = data.aci_rest_managed.aaaDomain.content.name
     want        = "SEC1"
+  }
+}
+
+data "aci_rest_managed" "aaaUserEp" {
+  dn = "uni/userext"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "aaaUserEp" {
+  component = "aaaUserEp"
+
+  equal "pwdStrengthCheck" {
+    description = "Password strength check"
+    got         = data.aci_rest_managed.aaaUserEp.content.pwdStrengthCheck
+    want        = "yes"
+  }
+}
+
+data "aci_rest_managed" "pkiWebTokenData" {
+  dn = "uni/userext/pkiext/webtokendata"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "pkiWebTokenData" {
+  component = "pkiWebTokenData"
+
+  equal "webtokenTimeoutSeconds" {
+    description = "Web token timeout"
+    got         = data.aci_rest_managed.pkiWebTokenData.content.webtokenTimeoutSeconds
+    want        = "600"
+  }
+
+  equal "maximumValidityPeriod" {
+    description = "Web token maximum validity period"
+    got         = data.aci_rest_managed.pkiWebTokenData.content.maximumValidityPeriod
+    want        = "24"
+  }
+
+  equal "uiIdleTimeoutSeconds" {
+    description = "web_session_idle_timeout"
+    got         = data.aci_rest_managed.pkiWebTokenData.content.uiIdleTimeoutSeconds
+    want        = "1200"
   }
 }
